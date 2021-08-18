@@ -1,0 +1,39 @@
+.App {
+  text-align: left;
+  background-image: url(https://mocah.org/uploads/posts/554621-food-4k-download.jpg);
+  position: fixed;
+  background-size: cover;
+  background-position: center;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/*=====================TOP_NAVIGATION_BAR===================*/
+.Container {
+  position: absolute;
+  margin: 10px;
+  width: auto;
+  right: 10px;
+  top: 20px;
+
+}
+
+.TopNav {
+  overflow: hidden;
+  background-color: #333;
+  opacity: 0.9;
+}
+
+.TopNav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.TopNav a:hover {
+  background-color: #ddd;
+  color: black;
+}

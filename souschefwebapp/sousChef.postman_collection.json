@@ -1,0 +1,873 @@
+{
+	"info": {
+		"_postman_id": "b0d42ff0-ff21-4ede-94c6-0714a38a2f19",
+		"name": "sousChef",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login Authentication",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"testpass\"\r\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/auth/login",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"signup test\",\r\n    \"lastName\": \"signup test\",\r\n    \"email\": \"signup email\",\r\n    \"password\": \"signup password\"\r\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/auth/signup",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fcd8e7c0-d9f8-44ea-a8b1-52e0e3443574",
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: \"http://localhost:8080/auth/login\",\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"            email : \"test@gmail.com\",\r",
+									"            password : \"testpass\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function(err, res) {\r",
+									"    var userToken = res.json();\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    } else{\r",
+									"        pm.environment.set(\"user-token\", userToken.token);\r",
+									"    }\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/auth/logout/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"auth",
+								"logout",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GET User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c4687986-1cbb-4de2-86a4-9b0d0bad157a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{localhost}}/api/user/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"POSTMAN_FIRST_PUT\",\r\n    \"lastName\" : \"POSTMAN_LAST_PUT\",\r\n    \"password\" : \"testpass\",\r\n    \"email\" : \"test@gmail.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/api/user/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/api/user/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b3e973c6-d8e2-4d7d-9fb3-49b1e0837e50",
+						"type": "text/javascript",
+						"exec": [
+							"const loginRequest = {",
+							"    url: \"http://localhost:8080/auth/login\",",
+							"    method: 'POST',",
+							"    header: {'content-type': 'application/json'},",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: {",
+							"            email : \"test@gmail.com\",",
+							"            password : \"testpass\"",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(loginRequest, function(err, res) {",
+							"    var userToken = res.json();",
+							"    if(err){",
+							"        console.log(\"ERROR\" + err);",
+							"    } else{",
+							"        pm.environment.set(\"user-token\", userToken.token);",
+							"    }",
+							"    ",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "919b9fb0-b657-42fb-9ee7-8f8809f960fb",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "GET Notes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/data/notes/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"notes",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Note by Title",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/data/notes/{{user-token}}/note",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"notes",
+								"{{user-token}}",
+								"note"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Note by Content",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/data/notes/{{user-token}}/note",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"notes",
+								"{{user-token}}",
+								"note"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Note",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"new note title\",\r\n    \"noteContent\": \"new note content\"\r\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/data/notes/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"notes",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Note",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bdd34c2e-ceeb-4816-b0e8-28eb80ee5b3d",
+								"exec": [
+									"const path = \"http://localhost:8080/data/notes/\" + pm.environment.get(\"user-token\");\r",
+									"const putNoteRequest = {\r",
+									"    url: path,\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"           title: \"NupdateScript\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(putNoteRequest, function(err, res) {\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    }\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"updated note title\",\r\n    \"noteContent\": \"updated note content\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/data/notes/{{user-token}}/NupdateScript",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"notes",
+								"{{user-token}}",
+								"NupdateScript"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Note",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "330939fd-519f-4877-8a5b-eb613ec1f10f",
+								"exec": [
+									"const path = \"http://localhost:8080/data/notes/\" + pm.environment.get(\"user-token\");\r",
+									"const putNoteRequest = {\r",
+									"    url: path,\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"           title: \"NdeleteScript\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(putNoteRequest, function(err, res) {\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    }\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"NdeleteScript\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/data/notes/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"notes",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5bb832ae-b969-4029-815e-f329080983ee",
+						"type": "text/javascript",
+						"exec": [
+							"const loginRequest = {",
+							"    url: \"http://localhost:8080/auth/login\",",
+							"    method: 'POST',",
+							"    header: {'content-type': 'application/json'},",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: {",
+							"            email : \"test@gmail.com\",",
+							"            password : \"testpass\"",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(loginRequest, function(err, res) {",
+							"    var userToken = res.json();",
+							"    if(err){",
+							"        console.log(\"ERROR\" + err);",
+							"    } else{",
+							"        pm.environment.set(\"user-token\", userToken.token);",
+							"    }",
+							"    ",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "062449b3-51a3-409f-941c-b5084b85498e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "GET Recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/data/recipes/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"recipes",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Recipe by Title",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1cc2a7aa-c8a1-407f-95f9-9434847a2017",
+								"exec": [
+									"const path = \"http://localhost:8080/data/recipes/\" + pm.environment.get(\"user-token\");\r",
+									"const putNoteRequest = {\r",
+									"    url: path,\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"           title: \"script\",\r",
+									"           mealType: \"BREAKFAST\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(putNoteRequest, function(err, res) {\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    }\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{localhost}}/data/recipes/{{user-token}}/script",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"recipes",
+								"{{user-token}}",
+								"script"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Recipe by MealType",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5e8c987a-91fc-4314-b9f2-44bfa294876f",
+								"exec": [
+									"const path = \"http://localhost:8080/data/recipes/\" + pm.environment.get(\"user-token\");\r",
+									"const putNoteRequest = {\r",
+									"    url: path,\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"           title: \"script\",\r",
+									"           mealType: \"BREAKFAST\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(putNoteRequest, function(err, res) {\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    }\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/data/recipes/{{user-token}}/BREAKFAST",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"recipes",
+								"{{user-token}}",
+								"BREAKFAST"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recipe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"new recipe title\",\r\n    \"mealType\": \"DINNER\"\r\n}"
+						},
+						"url": {
+							"raw": "{{localhost}}/data/recipes/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"recipes",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recipe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "44b38e38-896a-4760-a3c3-1c6d4dcfc963",
+								"exec": [
+									"const path = \"http://localhost:8080/data/recipes/\" + pm.environment.get(\"user-token\");\r",
+									"const putNoteRequest = {\r",
+									"    url: path,\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"           title: \"RupdateScript\",\r",
+									"           mealType: \"BREAKFAST\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(putNoteRequest, function(err, res) {\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    }\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"updated recipe title\",\r\n    \"mealType\": \"DINNER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/data/recipes/{{user-token}}/RupdateScript",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"recipes",
+								"{{user-token}}",
+								"RupdateScript"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "42a58d6b-d911-493a-a717-a71a5299314a",
+								"exec": [
+									"const path = \"http://localhost:8080/data/recipes/\" + pm.environment.get(\"user-token\");\r",
+									"const putNoteRequest = {\r",
+									"    url: path,\r",
+									"    method: 'POST',\r",
+									"    header: {'content-type': 'application/json'},\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: {\r",
+									"           title: \"RdeleteScript\"\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(putNoteRequest, function(err, res) {\r",
+									"    if(err){\r",
+									"        console.log(\"ERROR\" + err);\r",
+									"    }\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"RdeleteScript\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/data/recipes/{{user-token}}",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"data",
+								"recipes",
+								"{{user-token}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a1b266dc-be4e-4e02-a010-2ebb3d10ad0d",
+						"type": "text/javascript",
+						"exec": [
+							"const loginRequest = {",
+							"    url: \"http://localhost:8080/auth/login\",",
+							"    method: 'POST',",
+							"    header: {'content-type': 'application/json'},",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: {",
+							"            email : \"test@gmail.com\",",
+							"            password : \"testpass\"",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.sendRequest(loginRequest, function(err, res) {",
+							"    var userToken = res.json();",
+							"    if(err){",
+							"        console.log(\"ERROR\" + err);",
+							"    } else{",
+							"        pm.environment.set(\"user-token\", userToken.token);",
+							"    }",
+							"    ",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "269b3514-1c48-474d-a481-15e897bb76ac",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
